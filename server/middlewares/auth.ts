@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import * as Sentry from "@sentry/node";
 export const protect = async (
   req: Request,
   res: Response,
@@ -13,6 +14,7 @@ export const protect = async (
 
     next();
   } catch (error: any) {
+    Sentry.captureException(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
